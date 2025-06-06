@@ -1,5 +1,18 @@
 import { useState } from "react";
-import { Phone, Star, ChefHat, Heart, Calendar, Package } from "lucide-react";
+import { Phone, Star, ChefHat, Heart, Calendar } from "lucide-react";
+import { PiMotorcycle } from "react-icons/pi";
+
+import Hemat1 from "@/assets/images/menus/paket-hemat1.png";
+import Hemat2 from "@/assets/images/menus/paket-hemat2.png";
+import Hemat3 from "@/assets/images/menus/paket-hemat3.png";
+
+import B2Arsik from "@/assets/images/menus/b2-arsik.jpeg";
+import B2Tanggo from "@/assets/images/menus/b2-tanggo.jpeg";
+import IkanJahirArsik from "@/assets/images/menus/ikan-jahir-arsik.jpeg";
+
+import IcedAmericano from "@/assets/images/menus/iced-americano.jpeg";
+import ArenLatte from "@/assets/images/menus/aren-latte.jpeg";
+import LemonTea from "@/assets/images/menus/lemon-tea.jpeg";
 
 const TataringHomepage = () => {
   const [activeMenu, setActiveMenu] = useState("paket");
@@ -10,16 +23,14 @@ const TataringHomepage = () => {
       items: "Jahir Arsik + Lemon Tea",
       price: "Rp 35.000",
       originalPrice: "Rp 38.000",
-      image:
-        "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=300&h=200&fit=crop&auto=format",
+      image: Hemat1,
     },
     {
       name: "Hemat 2",
       items: "B2 Arsik/Tanggo + Lemon Tea",
       price: "Rp 43.000",
       originalPrice: "Rp 45.000",
-      image:
-        "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=300&h=200&fit=crop&auto=format",
+      image: Hemat2,
       popular: true,
     },
     {
@@ -27,8 +38,7 @@ const TataringHomepage = () => {
       items: "B2 Arsik/Tanggo + Aren Latte",
       price: "Rp 45.000",
       originalPrice: "Rp 50.000",
-      image:
-        "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=300&h=200&fit=crop&auto=format",
+      image: Hemat3,
     },
   ];
 
@@ -36,24 +46,23 @@ const TataringHomepage = () => {
     {
       name: "B2 Arsik",
       price: "Rp 35.000",
-      description: "Babi segar dengan bumbu arsik yang gurih dan pedas",
-      image:
-        "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&h=300&fit=crop&auto=format",
+      description:
+        "Daging Babi yang dimasak dengan bumbu khas batak seperti rias, andaliman, sereh, kunyit dan bumbu lainnya. Tekstur daging lembut dan gurih.",
+      image: B2Arsik,
       popular: true,
     },
     {
       name: "B2 Tanggo-Tanggo",
       price: "Rp 35.000",
-      description: "Babi bakar khas Batak dengan bumbu tanggo-tanggo",
-      image:
-        "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400&h=300&fit=crop&auto=format",
+      description:
+        "Daging babi yang dimasak dengan rempah khas batak, seperti andaliman, asam, lengkuas, dan bumbu lainnya. Tekstur daging lembut dan berkuah gota.",
+      image: B2Tanggo,
     },
     {
       name: "Ikan Jahir Arsik",
       price: "Rp 28.000",
       description: "Ikan mas segar dengan bumbu arsik tradisional khas Batak",
-      image:
-        "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&h=300&fit=crop&auto=format",
+      image: IkanJahirArsik,
     },
   ];
 
@@ -61,21 +70,24 @@ const TataringHomepage = () => {
     {
       name: "Iced Americano",
       price: "Rp 13.000",
-      image:
-        "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300&h=200&fit=crop&auto=format",
-      popular: true,
+      description:
+        "Minuman kopi hitam dingin yang menyegarkan dengan cita rasa pahit khas espresso, cocok untuk penyuka kopi tanpa gula.",
+      image: IcedAmericano,
     },
     {
       name: "Aren Latte",
       price: "Rp 15.000",
-      image:
-        "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300&h=200&fit=crop&auto=format",
+      description:
+        "Perpaduan lembut antara kopi dan susu, dipadukan dengan manis alami dari gula aren yang khas dan nikmat.",
+      image: ArenLatte,
+      popular: true,
     },
     {
       name: "Lemon Tea",
       price: "Rp 10.000",
-      image:
-        "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300&h=200&fit=crop&auto=format",
+      description:
+        "Teh segar dengan sentuhan lemon yang asam manis, cocok untuk dinikmati saat cuaca panas.",
+      image: LemonTea,
     },
   ];
 
@@ -170,12 +182,12 @@ const TataringHomepage = () => {
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap justify-center items-center gap-6 text-sm">
               <div className="flex items-center gap-2">
-                <Package className="w-4 h-4 text-amber-400" />
-                <span className="font-semibold">Pre-Order System</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-amber-400" />
                 <span>Ready 7 Juni 2025</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <PiMotorcycle className="w-5 h-5 text-amber-400" />
+                <span className="font-semibold">Bogor Kota - Dramaga</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-amber-400" />
@@ -260,7 +272,7 @@ const TataringHomepage = () => {
                       <img
                         src={paket.image}
                         alt={paket.name}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-48"
                       />
                       {paket.popular && (
                         <div className="absolute top-3 right-3">
@@ -322,7 +334,7 @@ const TataringHomepage = () => {
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-48"
                       />
                       {item.popular && (
                         <div className="absolute top-3 right-3">
@@ -377,7 +389,7 @@ const TataringHomepage = () => {
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-48"
                       />
                       {item.popular && (
                         <div className="absolute top-3 right-3">
@@ -395,6 +407,12 @@ const TataringHomepage = () => {
                       >
                         {item.name}
                       </h3>
+                      <p
+                        className="text-gray-600 text-sm mb-4 leading-relaxed"
+                        style={{ fontFamily: "Merriweather, Georgia, serif" }}
+                      >
+                        {item.description}
+                      </p>
                       <div className="flex justify-between items-center">
                         <span
                           className="text-xl font-bold text-red-900"
@@ -451,6 +469,15 @@ const TataringHomepage = () => {
                 <div className="text-left">
                   <div className="font-bold">Ready: 7 Juni 2025</div>
                   <div className="text-sm text-red-200">Pesan sekarang!</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 bg-red-800 px-6 py-3 rounded-lg border border-red-700">
+                <PiMotorcycle className="w-7 h-7 text-amber-400" />
+                <div className="text-left">
+                  <div className="font-bold">Antar Area Bogor</div>
+                  <div className="text-sm text-red-200">
+                    Bogor Kota - Dramaga
+                  </div>
                 </div>
               </div>
               <div className="flex items-center gap-3 bg-red-800 px-6 py-3 rounded-lg border border-red-700">

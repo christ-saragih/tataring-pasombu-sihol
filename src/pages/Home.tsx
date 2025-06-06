@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Phone, Star, ChefHat, Heart, Calendar } from "lucide-react";
+import { Phone, Star, ChefHat, Heart, Calendar, X } from "lucide-react";
 import { PiMotorcycle } from "react-icons/pi";
 
 import Hemat1 from "@/assets/images/menus/paket-hemat1.png";
@@ -14,10 +14,37 @@ import IcedAmericano from "@/assets/images/menus/iced-americano.jpeg";
 import ArenLatte from "@/assets/images/menus/aren-latte.jpeg";
 import LemonTea from "@/assets/images/menus/lemon-tea.jpeg";
 
-const TataringHomepage = () => {
-  const [activeMenu, setActiveMenu] = useState("paket");
+interface MenuItem {
+  name: string;
+  description?: string;
+  price: string;
+  image: string;
+  popular?: boolean;
+}
 
-  const paketHemat = [
+interface PaketItem {
+  name: string;
+  items: string;
+  price: string;
+  originalPrice: string;
+  image: string;
+  popular?: boolean;
+}
+
+interface SelectedItem extends MenuItem {
+  isPackage?: boolean;
+  items?: string;
+  originalPrice?: string;
+}
+
+const Home = () => {
+  const [activeMenu, setActiveMenu] = useState<"paket" | "makanan" | "minuman">(
+    "paket"
+  );
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedItem, setSelectedItem] = useState<SelectedItem | null>(null);
+
+  const paketHemat: PaketItem[] = [
     {
       name: "Hemat 1",
       items: "Jahir Arsik + Lemon Tea",
@@ -42,7 +69,7 @@ const TataringHomepage = () => {
     },
   ];
 
-  const makanan = [
+  const makanan: MenuItem[] = [
     {
       name: "B2 Arsik",
       price: "Rp 35.000",
@@ -66,7 +93,7 @@ const TataringHomepage = () => {
     },
   ];
 
-  const minuman = [
+  const minuman: MenuItem[] = [
     {
       name: "Iced Americano",
       price: "Rp 13.000",
@@ -97,6 +124,31 @@ const TataringHomepage = () => {
     document
       .getElementById("menu-section")
       ?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleOrderClick = (
+    item: MenuItem | PaketItem,
+    isPackage: boolean = false
+  ) => {
+    const selectedItemData: SelectedItem = {
+      ...item,
+      isPackage,
+      description: "description" in item ? item.description : undefined,
+      items: "items" in item ? item.items : undefined,
+      originalPrice: "originalPrice" in item ? item.originalPrice : undefined,
+    };
+    setSelectedItem(selectedItemData);
+    setShowModal(true);
+  };
+
+  const handleWhatsAppOrder = () => {
+    const itemType = selectedItem?.isPackage ? "paket" : "menu";
+    const message = `Halo Tataring Pasombu Sihol! Saya ingin pre-order ${itemType}: ${selectedItem?.name} untuk tanggal 7 Juni 2025. Mohon info lebih lanjut. Terima kasih!`;
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(whatsappUrl, "_blank");
+    setShowModal(false);
   };
 
   return (
@@ -272,7 +324,7 @@ const TataringHomepage = () => {
                       <img
                         src={paket.image}
                         alt={paket.name}
-                        className="w-full h-48"
+                        className="w-full h-48 object-cover"
                       />
                       {paket.popular && (
                         <div className="absolute top-3 right-3">
@@ -312,7 +364,8 @@ const TataringHomepage = () => {
                         </div>
                       </div>
                       <button
-                        className="w-full bg-amber-400 hover:bg-amber-400 text-red-900 font-bold py-2 rounded-lg transition-all transform hover:scale-105 shadow-md"
+                        onClick={() => handleOrderClick(paket, true)}
+                        className="w-full bg-amber-400 hover:bg-amber-500 text-red-900 font-bold py-2 rounded-lg transition-all transform hover:scale-105 shadow-md"
                         style={{ fontFamily: "Oswald, Arial, sans-serif" }}
                       >
                         PILIH PAKET
@@ -366,7 +419,8 @@ const TataringHomepage = () => {
                           {item.price}
                         </span>
                         <button
-                          className="bg-amber-400 hover:bg-amber-400 text-red-900 font-bold px-4 py-2 rounded-lg transition-all transform hover:scale-105 shadow-md"
+                          onClick={() => handleOrderClick(item)}
+                          className="bg-amber-400 hover:bg-amber-500 text-red-900 font-bold px-4 py-2 rounded-lg transition-all transform hover:scale-105 shadow-md"
                           style={{ fontFamily: "Oswald, Arial, sans-serif" }}
                         >
                           PESAN
@@ -421,7 +475,8 @@ const TataringHomepage = () => {
                           {item.price}
                         </span>
                         <button
-                          className="bg-amber-400 hover:bg-amber-400 text-red-900 font-bold px-4 py-2 rounded-lg transition-all transform hover:scale-105 shadow-md"
+                          onClick={() => handleOrderClick(item)}
+                          className="bg-amber-400 hover:bg-amber-500 text-red-900 font-bold px-4 py-2 rounded-lg transition-all transform hover:scale-105 shadow-md"
                           style={{ fontFamily: "Oswald, Arial, sans-serif" }}
                         >
                           PESAN
@@ -572,9 +627,107 @@ const TataringHomepage = () => {
             </div>
           </div>
         </footer>
+
+        {/* Modal WhatsApp */}
+        {showModal && (
+          <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl max-w-md w-full mx-auto shadow-2xl border-4 border-amber-200">
+              {/* Modal Header */}
+              <div className="bg-gradient-to-r from-red-900 to-amber-700 text-white p-6 rounded-t-2xl relative">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="absolute right-4 top-4 text-white hover:text-amber-200 transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-400 rounded-full mb-3 shadow-lg">
+                    <Phone className="w-8 h-8 text-red-900" />
+                  </div>
+                  <h3
+                    className="text-2xl font-bold"
+                    style={{ fontFamily: "Bebas Neue, Impact, sans-serif" }}
+                  >
+                    PEMESANAN VIA WHATSAPP
+                  </h3>
+                </div>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-6">
+                <div className="text-center mb-6">
+                  <h4
+                    className="text-lg font-bold text-red-900 mb-2"
+                    style={{ fontFamily: "Playfair Display, serif" }}
+                  >
+                    {selectedItem?.name}
+                  </h4>
+                  <p
+                    className="text-gray-600 text-sm mb-4"
+                    style={{ fontFamily: "Merriweather, Georgia, serif" }}
+                  >
+                    Saat ini pemesanan hanya dapat dilakukan melalui WhatsApp
+                    untuk memberikan pelayanan terbaik dan memastikan
+                    ketersediaan makanan.
+                  </p>
+
+                  <div className="bg-amber-50 border-2 border-amber-200 rounded-lg p-4 mb-4">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <Calendar className="w-5 h-5 text-red-900" />
+                      <span
+                        className="font-bold text-red-900"
+                        style={{ fontFamily: "Oswald, Arial, sans-serif" }}
+                      >
+                        PRE-ORDER SYSTEM
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-700">
+                      Ready: <strong>7 Juni 2025</strong>
+                      <br />
+                      Area: <strong>Bogor Kota - Dramaga</strong>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="space-y-3">
+                  <button
+                    onClick={handleWhatsAppOrder}
+                    className="w-full bg-green-500 hover:bg-green-400 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-3"
+                    style={{ fontFamily: "Oswald, Arial, sans-serif" }}
+                  >
+                    <Phone className="w-6 h-6" />
+                    <span>PESAN VIA WHATSAPP</span>
+                  </button>
+
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-6 rounded-xl transition-all duration-300"
+                    style={{ fontFamily: "Oswald, Arial, sans-serif" }}
+                  >
+                    TUTUP
+                  </button>
+                </div>
+
+                {/* Contact Info */}
+                <div className="mt-6 pt-4 border-t border-gray-200 text-center">
+                  <p className="text-xs text-gray-500 mb-2">
+                    Hubungi langsung:
+                  </p>
+                  <p
+                    className="font-bold text-red-900"
+                    style={{ fontFamily: "Oswald, Arial, sans-serif" }}
+                  >
+                    +62 822-7478-3879 (Martua)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
 };
 
-export default TataringHomepage;
+export default Home;

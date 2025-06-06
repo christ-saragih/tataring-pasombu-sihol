@@ -224,7 +224,7 @@ const TataringHomepage = () => {
                 <button
                   onClick={() => setActiveMenu("makanan")}
                   className={`px-6 py-3 rounded-full font-bold transition-all ${
-                    activeMenu === "utama"
+                    activeMenu === "makanan"
                       ? "bg-red-900 text-white shadow-lg"
                       : "text-red-900 hover:bg-red-50"
                   }`}

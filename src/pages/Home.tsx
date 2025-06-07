@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Phone, Star, ChefHat, Heart, Calendar, X } from "lucide-react";
+import { Phone, Star, Heart, Calendar, X } from "lucide-react";
 import { PiMotorcycle } from "react-icons/pi";
 
 import Hemat1 from "@/assets/images/menus/paket-hemat1.png";
@@ -180,8 +180,12 @@ const Home = () => {
           <div className="relative z-10 container mx-auto px-4 py-12 text-center">
             {/* Logo/Brand */}
             <div className="mb-6">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-amber-400 rounded-full mb-4 shadow-lg border-4 border-amber-300">
-                <ChefHat className="w-10 h-10 text-red-900" />
+              <div className="inline-flex items-center justify-center mb-4">
+                <img
+                  src="/logo-tataring.svg"
+                  alt="Logo Tataring Pasombu Sihol"
+                  className="w-32 h-32 md:w-36 md:h-36 rounded-full shadow-lg"
+                />
               </div>
               <h1
                 className="text-4xl md:text-6xl font-bold mb-2 tracking-wider text-amber-100"

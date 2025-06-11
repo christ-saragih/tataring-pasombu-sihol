@@ -976,7 +976,7 @@ const Home = () => {
             onClick={toggleMusic}
             disabled={isLoading}
             className={`
-        relative w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-lg border-3 transition-all duration-300 transform
+        relative w-16 h-16 rounded-full shadow-lg border-3 transition-all duration-300 transform
         ${
           isPlaying
             ? "bg-gradient-to-br from-amber-400 to-amber-500 border-amber-600 hover:scale-110"
@@ -1028,7 +1028,7 @@ const Home = () => {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center">
-                    <div className="text-xl sm:text-2xl">🎵</div>
+                    <div className="text-2xl">🎵</div>
                     <div className="text-xs mt-1">OFF</div>
                   </div>
                 )}

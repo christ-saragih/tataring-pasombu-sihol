@@ -154,7 +154,7 @@ const Home = () => {
       name: "Hemat 3",
       items: "Mie Sop + Aren Latte",
       price: "Rp 33.000",
-      originalPrice: "Rp 55.000",
+      originalPrice: "Rp 35.000",
       image: Hemat3,
     },
   ];
@@ -269,6 +269,15 @@ const Home = () => {
   const handleWhatsAppOrder = () => {
     const itemType = selectedItem?.isPackage ? "paket" : "menu";
     const message = `Halo Tataring Pasombu Sihol! Saya ingin pre-order ${itemType}: ${selectedItem?.name} untuk tanggal 14 Juni 2025. Mohon info lebih lanjut. Terima kasih!`;
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(whatsappUrl, "_blank");
+    setShowModal(false);
+  };
+
+  const handleWhatsAppPreOrder = () => {
+    const message = `Halo Tataring Pasombu Sihol! Saya ingin pre-order untuk tanggal 14 Juni 2025. Mohon info lebih lanjut. Terima kasih!`;
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       message
     )}`;
@@ -758,16 +767,14 @@ const Home = () => {
               </div>
             </div>
 
-            <a
-              href={`https://wa.me/${whatsappNumber}?text=Halo%20Tataring%20Pasombu%20Sihol,%20saya%20ingin%20pre-order%20makanan%20untuk%20tanggal%207%20Juni%202025`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={handleWhatsAppPreOrder}
               className="inline-flex items-center gap-3 bg-green-500 hover:bg-green-400 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl border-2 border-green-400"
               style={{ fontFamily: "Oswald, Arial, sans-serif" }}
             >
               <Phone className="w-6 h-6" />
               PRE-ORDER VIA WHATSAPP
-            </a>
+            </button>
           </div>
         </section>
 

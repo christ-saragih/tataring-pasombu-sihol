@@ -1,18 +1,39 @@
-import { useState } from "react";
-import { Phone, Star, Heart, Calendar, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  Phone,
+  Star,
+  Heart,
+  Calendar,
+  X,
+  AlertCircle,
+  Clock,
+} from "lucide-react";
 import { PiMotorcycle } from "react-icons/pi";
 
-import Hemat1 from "@/assets/images/menus/paket-hemat1.png";
-import Hemat2 from "@/assets/images/menus/paket-hemat2.png";
-import Hemat3 from "@/assets/images/menus/paket-hemat3.png";
+import HeaderBorder from "@/assets/images/header-border-art.png";
+
+import MusikTest from "@/assets/musics/dijou-au-mulak.mp3";
+
+// import Hemat1 from "@/assets/images/menus/paket-hemat1.png";
+// import Hemat2 from "@/assets/images/menus/paket-hemat2.png";
+// import Hemat3 from "@/assets/images/menus/paket-hemat3.png";
+
+import Hemat1 from "@/assets/images/menus/batch2/hemat1.png";
+import Hemat2 from "@/assets/images/menus/batch2/hemat2.png";
+import Hemat3 from "@/assets/images/menus/batch2/hemat3.png";
+
+import AyamGota from "@/assets/images/menus/ayam-gota.jpeg";
+import B2Kecap from "@/assets/images/menus/b2-kecap.jpeg";
+import MieSopMedan from "@/assets/images/menus/mie-sop-medan.jpeg";
 
 import B2Arsik from "@/assets/images/menus/b2-arsik.jpeg";
 import B2Tanggo from "@/assets/images/menus/b2-tanggo.jpeg";
 import IkanJahirArsik from "@/assets/images/menus/ikan-jahir-arsik.jpeg";
 
-import IcedAmericano from "@/assets/images/menus/iced-americano.jpeg";
+import IcedAmericano from "@/assets/images/menus/iced-americano.png";
 import ArenLatte from "@/assets/images/menus/aren-latte.jpeg";
 import LemonTea from "@/assets/images/menus/lemon-tea.jpeg";
+import CocoPandan from "@/assets/images/menus/coco-pandan.png";
 
 interface MenuItem {
   name: string;
@@ -20,6 +41,7 @@ interface MenuItem {
   price: string;
   image: string;
   popular?: boolean;
+  available?: boolean;
 }
 
 interface PaketItem {
@@ -44,32 +66,125 @@ const Home = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<SelectedItem | null>(null);
 
+  // 3. TAMBAHKAN STATE BARU di dalam komponen Home (setelah state yang sudah ada)
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [showMusicToast, setShowMusicToast] = useState<boolean>(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  // 4. TAMBAHKAN useEffect UNTUK MENGELOLA MUSIK (letakkan setelah definisi state)
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleCanPlay = (): void => {
+      setIsLoading(false);
+    };
+
+    const handleEnded = (): void => {
+      // Loop musik
+      audio.currentTime = 0;
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error: Error) => {
+          console.log("Loop play error:", error);
+        });
+      }
+    };
+
+    const handleError = (event: Event): void => {
+      setIsLoading(false);
+      console.log("Error loading audio:", event);
+    };
+
+    audio.addEventListener("canplay", handleCanPlay);
+    audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("error", handleError);
+
+    return () => {
+      audio.removeEventListener("canplay", handleCanPlay);
+      audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("error", handleError);
+    };
+  }, []);
+
+  // 5. TAMBAHKAN FUNCTION UNTUK TOGGLE MUSIK (letakkan setelah useEffect)
+  const toggleMusic = (): void => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+      setShowMusicToast(true);
+      setTimeout(() => setShowMusicToast(false), 2000);
+    } else {
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+            setShowMusicToast(true);
+            setTimeout(() => setShowMusicToast(false), 2000);
+          })
+          .catch((error: Error) => {
+            console.log("Play prevented:", error);
+          });
+      }
+    }
+  };
+
   const paketHemat: PaketItem[] = [
     {
       name: "Hemat 1",
-      items: "Jahir Arsik + Lemon Tea",
-      price: "Rp 35.000",
-      originalPrice: "Rp 38.000",
+      items: "Ayam Gota + Lemon Tea",
+      price: "Rp 38.000",
+      originalPrice: "Rp 40.000",
       image: Hemat1,
     },
     {
       name: "Hemat 2",
-      items: "B2 Arsik/Tanggo + Lemon Tea",
-      price: "Rp 43.000",
-      originalPrice: "Rp 45.000",
+      items: "B2 Kecap + Aren Latte",
+      price: "Rp 45.000",
+      originalPrice: "Rp 48.000",
       image: Hemat2,
       popular: true,
     },
     {
       name: "Hemat 3",
-      items: "B2 Arsik/Tanggo + Aren Latte",
-      price: "Rp 45.000",
-      originalPrice: "Rp 50.000",
+      items: "Mie Sop + Aren Latte",
+      price: "Rp 33.000",
+      originalPrice: "Rp 55.000",
       image: Hemat3,
     },
   ];
 
   const makanan: MenuItem[] = [
+    {
+      name: "Ayam Gota",
+      price: "Rp 30.000",
+      description:
+        "Ayam gota adalah masakan khas Batak Toba yang berbahan dasar ayam kampung yang direbus lalu dicampur dengan gota, andaliman, asam, dan rempah khas lainnya. Rasa pedas dan getir dari andaliman membuat cita rasanya unik.",
+      image: AyamGota,
+      available: true,
+    },
+    {
+      name: "Mie Sop Medan",
+      price: "Rp 20.000",
+      description:
+        "Mie sop Medan adalah sajian bihun yang disiram kuah kaldu bening gurih, dilengkapi dengan potongan ayam suwir, daun bawang, dan bawang goreng. ditambah kerupuk pelengkap. Rasanya ringan, segar, dan kaya aroma rempah seperti pala dan merica.",
+      image: MieSopMedan,
+      available: true,
+    },
+    {
+      name: "B2 Kecap",
+      price: "Rp 33.000",
+      description:
+        "Babi kecap merupakan olahan daging babi yang dimasak dengan bumbu manis gurih khas kecap, bawang putih, jahe, dan  diberi tambahan daun salam dan serai. Hidangan ini populer dalam tradisi Batak  biasa disajikan dalam momen perayaan keluarga.",
+      image: B2Kecap,
+      available: true,
+      popular: true,
+    },
     {
       name: "B2 Arsik",
       price: "Rp 35.000",
@@ -77,6 +192,7 @@ const Home = () => {
         "Daging Babi yang dimasak dengan bumbu khas batak seperti rias, andaliman, sereh, kunyit dan bumbu lainnya. Tekstur daging lembut dan gurih.",
       image: B2Arsik,
       popular: true,
+      available: false,
     },
     {
       name: "B2 Tanggo-Tanggo",
@@ -84,12 +200,14 @@ const Home = () => {
       description:
         "Daging babi yang dimasak dengan rempah khas batak, seperti andaliman, asam, lengkuas, dan bumbu lainnya. Tekstur daging lembut dan berkuah gota.",
       image: B2Tanggo,
+      available: false,
     },
     {
       name: "Ikan Jahir Arsik",
       price: "Rp 28.000",
       description: "Ikan mas segar dengan bumbu arsik tradisional khas Batak",
       image: IkanJahirArsik,
+      available: false,
     },
   ];
 
@@ -102,7 +220,7 @@ const Home = () => {
       image: IcedAmericano,
     },
     {
-      name: "Aren Latte",
+      name: "Kopi Kedanta (Aren Latte)",
       price: "Rp 15.000",
       description:
         "Perpaduan lembut antara kopi dan susu, dipadukan dengan manis alami dari gula aren yang khas dan nikmat.",
@@ -115,6 +233,13 @@ const Home = () => {
       description:
         "Teh segar dengan sentuhan lemon yang asam manis, cocok untuk dinikmati saat cuaca panas.",
       image: LemonTea,
+    },
+    {
+      name: "Coco Pandan Sipiso-Piso Delight",
+      price: "Rp 15.000",
+      description:
+        "Minuman kopi susu dingin yang memikat dengan sentuhan manis pandan dan kelapa, memberikan aroma tropis yang menyegarkan.",
+      image: CocoPandan,
     },
   ];
 
@@ -143,7 +268,7 @@ const Home = () => {
 
   const handleWhatsAppOrder = () => {
     const itemType = selectedItem?.isPackage ? "paket" : "menu";
-    const message = `Halo Tataring Pasombu Sihol! Saya ingin pre-order ${itemType}: ${selectedItem?.name} untuk tanggal 7 Juni 2025. Mohon info lebih lanjut. Terima kasih!`;
+    const message = `Halo Tataring Pasombu Sihol! Saya ingin pre-order ${itemType}: ${selectedItem?.name} untuk tanggal 14 Juni 2025. Mohon info lebih lanjut. Terima kasih!`;
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       message
     )}`;
@@ -163,17 +288,41 @@ const Home = () => {
         className="min-h-screen bg-white"
         style={{ fontFamily: "Merriweather, Georgia, serif" }}
       >
+        <audio
+          ref={audioRef}
+          preload="auto"
+          loop={false} // Kita handle loop manual untuk kontrol yang lebih baik
+        >
+          <source src={MusikTest} type="audio/mp3" />
+          <source src={MusikTest} type="audio/mp3" />
+          Your browser does not support the audio element.
+        </audio>
+
         {/* Header dengan Background Pattern */}
         <header className="relative bg-gradient-to-br from-red-900 via-red-800 to-amber-700 text-white overflow-hidden">
+          {/* Kiri */}
+          <img
+            src={HeaderBorder}
+            alt="Header Border Art"
+            className="absolute left-0 top-0 h-full z-0 opacity-30"
+          />
+
+          {/* Kanan */}
+          <img
+            src={HeaderBorder}
+            alt="Header Border Art"
+            className="absolute right-0 top-0 h-full transform -scale-x-100 z-0 opacity-30"
+          />
+
           {/* Decorative Batak Pattern */}
           <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-4 left-4 w-16 h-16 border-2 border-white transform rotate-45"></div>
-            <div className="absolute top-8 left-20 w-8 h-8 border border-amber-300 transform rotate-12"></div>
-            <div className="absolute top-16 right-8 w-12 h-12 border-2 border-amber-300 transform rotate-12"></div>
+            <div className="absolute top-4 left-16 w-16 h-16 border-2 border-white transform rotate-45"></div>
+            <div className="absolute top-8 left-28 w-8 h-8 border border-amber-300 transform rotate-12"></div>
+            <div className="absolute top-16 right-16 w-12 h-12 border-2 border-amber-300 transform rotate-12"></div>
             <div className="absolute top-4 right-20 w-6 h-6 bg-amber-400 transform rotate-45"></div>
-            <div className="absolute bottom-8 left-12 w-20 h-20 border-2 border-white transform -rotate-12"></div>
-            <div className="absolute bottom-16 left-32 w-4 h-4 border border-amber-300 transform rotate-45"></div>
-            <div className="absolute bottom-4 right-4 w-8 h-8 bg-amber-400 transform rotate-45"></div>
+            <div className="absolute bottom-8 left-16 sm:left-24 w-20 h-20 border-2 border-white transform -rotate-12"></div>
+            <div className="absolute bottom-16 left-40 w-4 h-4 border border-amber-300 transform rotate-45"></div>
+            <div className="absolute bottom-4 right-24 w-8 h-8 bg-amber-400 transform rotate-45"></div>
             <div className="absolute bottom-12 right-16 w-6 h-6 border border-white transform -rotate-12"></div>
           </div>
 
@@ -239,7 +388,7 @@ const Home = () => {
             <div className="flex flex-wrap justify-center items-center gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-amber-400" />
-                <span>Ready 7 Juni 2025</span>
+                <span>Ready 14 Juni 2025</span>
               </div>
               <div className="flex items-center gap-2">
                 <PiMotorcycle className="w-5 h-5 text-amber-400" />
@@ -385,15 +534,23 @@ const Home = () => {
                 {makanan.map((item, index) => (
                   <div
                     key={index}
-                    className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-red-100"
+                    className={`bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 border-2 ${
+                      item.available
+                        ? "hover:shadow-xl transform hover:-translate-y-2 border-red-100"
+                        : "opacity-75 border-gray-200 cursor-not-allowed"
+                    }`}
                   >
                     <div className="relative">
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-full h-48"
+                        className={`w-full h-48 object-cover ${
+                          !item.available ? "grayscale brightness-75" : ""
+                        }`}
                       />
-                      {item.popular && (
+
+                      {/* Badge Popular */}
+                      {item.popular && item.available && (
                         <div className="absolute top-3 right-3">
                           <div className="bg-amber-400 text-red-900 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
                             <Star className="w-3 h-3" fill="currentColor" />
@@ -401,34 +558,85 @@ const Home = () => {
                           </div>
                         </div>
                       )}
+
+                      {/* Badge Tidak Tersedia */}
+                      {!item.available && (
+                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                          <div className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 shadow-lg">
+                            <AlertCircle className="w-4 h-4" />
+                            <span>TIDAK TERSEDIA</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Overlay gradient untuk makanan tidak tersedia */}
+                      {!item.available && (
+                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
+                      )}
                     </div>
+
                     <div className="p-6">
                       <h3
-                        className="text-xl font-bold text-red-900 mb-2"
+                        className={`text-xl font-bold mb-2 ${
+                          item.available ? "text-red-900" : "text-gray-500"
+                        }`}
                         style={{ fontFamily: "Playfair Display, serif" }}
                       >
                         {item.name}
                       </h3>
+
                       <p
-                        className="text-gray-600 text-sm mb-4 leading-relaxed"
+                        className={`text-sm mb-4 leading-relaxed ${
+                          item.available ? "text-gray-600" : "text-gray-400"
+                        }`}
                         style={{ fontFamily: "Merriweather, Georgia, serif" }}
                       >
                         {item.description}
                       </p>
+
+                      {/* Pesan khusus untuk makanan tidak tersedia */}
+                      {!item.available && (
+                        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                          <div className="flex items-center gap-2 text-red-600 text-sm">
+                            <Clock className="w-4 h-4" />
+                            <span className="font-medium">
+                              Sedang tidak tersedia
+                            </span>
+                          </div>
+                          <p className="text-red-500 text-xs mt-1">
+                            Mohon maaf, makanan ini sedang tidak bisa dipesan
+                            saat ini
+                          </p>
+                        </div>
+                      )}
+
                       <div className="flex justify-between items-center">
                         <span
-                          className="text-2xl font-bold text-red-900"
+                          className={`text-2xl font-bold ${
+                            item.available ? "text-red-900" : "text-gray-400"
+                          }`}
                           style={{ fontFamily: "Oswald, Arial, sans-serif" }}
                         >
                           {item.price}
                         </span>
-                        <button
-                          onClick={() => handleOrderClick(item)}
-                          className="bg-amber-400 hover:bg-amber-500 text-red-900 font-bold px-4 py-2 rounded-lg transition-all transform hover:scale-105 shadow-md"
-                          style={{ fontFamily: "Oswald, Arial, sans-serif" }}
-                        >
-                          PESAN
-                        </button>
+
+                        {item.available ? (
+                          <button
+                            onClick={() => handleOrderClick(item)}
+                            className="bg-amber-400 hover:bg-amber-500 text-red-900 font-bold px-4 py-2 rounded-lg transition-all transform hover:scale-105 shadow-md"
+                            style={{ fontFamily: "Oswald, Arial, sans-serif" }}
+                          >
+                            PESAN
+                          </button>
+                        ) : (
+                          <button
+                            disabled
+                            className="bg-gray-300 text-gray-500 font-bold px-4 py-2 rounded-lg cursor-not-allowed opacity-60"
+                            style={{ fontFamily: "Oswald, Arial, sans-serif" }}
+                          >
+                            TIDAK TERSEDIA
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -526,7 +734,7 @@ const Home = () => {
               <div className="flex items-center gap-3 bg-red-800 px-6 py-3 rounded-lg border border-red-700">
                 <Calendar className="w-6 h-6 text-amber-400" />
                 <div className="text-left">
-                  <div className="font-bold">Ready: 7 Juni 2025</div>
+                  <div className="font-bold">Ready: 14 Juni 2025</div>
                   <div className="text-sm text-red-200">Pesan sekarang!</div>
                 </div>
               </div>
@@ -590,7 +798,7 @@ const Home = () => {
                   SISTEM
                 </h4>
                 <p className="text-gray-300">Pre-Order Only</p>
-                <p className="text-gray-300">Ready: 7 Juni 2025</p>
+                <p className="text-gray-300">Ready: 14 Juni 2025</p>
               </div>
               <div>
                 <h4
@@ -599,8 +807,29 @@ const Home = () => {
                 >
                   KONTAK
                 </h4>
-                <p className="text-gray-300">+62 822-7478-3879</p>
-                <p className="text-gray-300">(Martua)</p>
+                <p className="text-gray-300">
+                  WA:{" "}
+                  <a
+                    href="https://wa.me/6282274783879"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline"
+                  >
+                    +62 822-7478-3879 (Martua)
+                  </a>
+                </p>
+
+                <p className="text-gray-300">
+                  IG:{" "}
+                  <a
+                    href="https://www.instagram.com/tataring_pasombusihol/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className=" hover:underline"
+                  >
+                    @tataring_pasombusihol
+                  </a>
+                </p>
               </div>
               <div>
                 <h4
@@ -686,7 +915,7 @@ const Home = () => {
                       </span>
                     </div>
                     <p className="text-sm text-gray-700">
-                      Ready: <strong>7 Juni 2025</strong>
+                      Ready: <strong>14 Juni 2025</strong>
                       <br />
                       Area: <strong>Bogor Kota - Dramaga</strong>
                     </p>
@@ -730,6 +959,119 @@ const Home = () => {
           </div>
         )}
       </div>
+
+      {/* Music Control Button */}
+      <div className="fixed bottom-4 right-6 z-50">
+        <div className="relative">
+          {/* Ripple Animation Ring saat musik playing */}
+          {isPlaying && (
+            <>
+              <div className="absolute inset-0 rounded-full bg-amber-400 animate-ping opacity-20 scale-110"></div>
+              <div className="absolute inset-0 rounded-full bg-red-500 animate-pulse opacity-30 scale-105"></div>
+            </>
+          )}
+
+          {/* Main Button */}
+          <button
+            onClick={toggleMusic}
+            disabled={isLoading}
+            className={`
+        relative w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-lg border-3 transition-all duration-300 transform
+        ${
+          isPlaying
+            ? "bg-gradient-to-br from-amber-400 to-amber-500 border-amber-600 hover:scale-110"
+            : "bg-gradient-to-br from-gray-600 to-gray-700 border-gray-800 hover:scale-105"
+        }
+        ${
+          isLoading
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:shadow-xl active:scale-95"
+        }
+        ${isPlaying ? "animate-spin-slow" : ""}
+      `}
+            type="button"
+            aria-label={isPlaying ? "Matikan musik" : "Nyalakan musik"}
+          >
+            {/* Loading Spinner */}
+            {isLoading && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
+
+            {/* Music Icons */}
+            {!isLoading && (
+              <div className="absolute inset-0 flex items-center justify-center text-white">
+                {isPlaying ? (
+                  <div className="flex flex-col items-center">
+                    <div className="flex gap-1 mb-1">
+                      <div className="w-1 h-4 bg-red-900 rounded animate-pulse"></div>
+                      <div
+                        className="w-1 h-6 bg-red-900 rounded animate-pulse"
+                        style={{ animationDelay: "0.1s" }}
+                      ></div>
+                      <div
+                        className="w-1 h-3 bg-red-900 rounded animate-pulse"
+                        style={{ animationDelay: "0.2s" }}
+                      ></div>
+                      <div
+                        className="w-1 h-5 bg-red-900 rounded animate-pulse"
+                        style={{ animationDelay: "0.075s" }}
+                      ></div>
+                    </div>
+                    <div
+                      className="text-xs font-bold text-red-900"
+                      style={{ fontFamily: "Oswald, sans-serif" }}
+                    >
+                      ♪
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center">
+                    <div className="text-xl sm:text-2xl">🎵</div>
+                    <div className="text-xs mt-1">OFF</div>
+                  </div>
+                )}
+              </div>
+            )}
+          </button>
+
+          {/* Tooltip */}
+          <div
+            className={`
+      absolute bottom-full right-0 mb-2 px-3 py-1 bg-black text-white text-xs rounded-lg whitespace-nowrap
+      transition-all duration-200 pointer-events-none
+      ${isPlaying ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}
+    `}
+          >
+            <div
+              className="text-center"
+              style={{ fontFamily: "Oswald, sans-serif" }}
+            >
+              <div className="font-bold text-amber-400">♪ MUSIK BATAK ♪</div>
+              <div>Klik untuk {isPlaying ? "matikan" : "nyalakan"}</div>
+            </div>
+            <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black"></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Music Toast Notification */}
+      {showMusicToast && (
+        <div className="fixed top-6 right-6 z-50 animate-bounce">
+          <div className="bg-gradient-to-r from-amber-500 to-red-600 text-white px-4 py-2 rounded-lg shadow-lg border border-amber-400">
+            <div className="flex items-center gap-2">
+              <div className="text-lg">{isPlaying ? "🎵" : "🔇"}</div>
+              <div
+                className="text-sm font-bold"
+                style={{ fontFamily: "Oswald, sans-serif" }}
+              >
+                Musik {isPlaying ? "NYALA" : "MATI"}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

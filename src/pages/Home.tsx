@@ -25,6 +25,7 @@ import HeroSection from "../components/HeroSection";
 import MenuSection from "../components/MenuSection";
 import PreOrderSection from "../components/PreOrderSection";
 import TestimonialSection from "../components/TestimonialSection";
+import GallerySection from "../components/GallerySection";
 import Footer from "../components/Footer";
 
 interface MenuItem {
@@ -57,6 +58,16 @@ interface Testimonial {
   rating: number;
   comment: string;
   date: string;
+}
+
+interface GalleryImage {
+  id: number;
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  category: "memasak" | "packaging" | "pengantaran" | "lainnya";
+  caption?: string;
 }
 
 const Home = () => {
@@ -278,6 +289,178 @@ const Home = () => {
     },
   ];
 
+  const galleryImages: GalleryImage[] = [
+    // Memasak - Proses pembuatan masakan
+    {
+      id: 1,
+      src: "/placeholder-cooking-1.jpg",
+      alt: "Tim memasak Ayam Gota",
+      width: 800,
+      height: 1000,
+      category: "memasak",
+      caption: "Proses memasak Ayam Gota dengan bumbu andaliman khas Batak",
+    },
+    {
+      id: 2,
+      src: "/placeholder-cooking-2.jpg",
+      alt: "Memasak B2 Kecap",
+      width: 1200,
+      height: 800,
+      category: "memasak",
+      caption: "Menumis B2 Kecap dengan bumbu rempah pilihan",
+    },
+    {
+      id: 3,
+      src: "/placeholder-cooking-3.jpg",
+      alt: "Persiapan bahan masakan",
+      width: 800,
+      height: 600,
+      category: "memasak",
+      caption: "Menyiapkan bahan-bahan segar untuk masakan autentik",
+    },
+    {
+      id: 4,
+      src: "/placeholder-cooking-4.jpg",
+      alt: "Memasak Mie Sop Medan",
+      width: 900,
+      height: 1200,
+      category: "memasak",
+      caption: "Proses membuat kuah Mie Sop Medan yang gurih",
+    },
+    {
+      id: 5,
+      src: "/placeholder-cooking-5.jpg",
+      alt: "Tim dapur sedang bekerja",
+      width: 1000,
+      height: 750,
+      category: "memasak",
+      caption: "Kerjasama tim dapur untuk hasil terbaik",
+    },
+
+    // Packaging - Proses pengemasan
+    {
+      id: 6,
+      src: "/placeholder-packaging-1.jpg",
+      alt: "Packaging makanan",
+      width: 800,
+      height: 1000,
+      category: "packaging",
+      caption: "Pengemasan rapi dan higienis untuk setiap pesanan",
+    },
+    {
+      id: 7,
+      src: "/placeholder-packaging-2.jpg",
+      alt: "Pengemasan paket hemat",
+      width: 1200,
+      height: 900,
+      category: "packaging",
+      caption: "Paket Hemat dikemas dengan packaging premium",
+    },
+    {
+      id: 8,
+      src: "/placeholder-packaging-3.jpg",
+      alt: "Quality control packaging",
+      width: 800,
+      height: 800,
+      category: "packaging",
+      caption: "Pengecekan kualitas sebelum dikirim ke pelanggan",
+    },
+    {
+      id: 9,
+      src: "/placeholder-packaging-4.jpg",
+      alt: "Packaging minuman",
+      width: 600,
+      height: 900,
+      category: "packaging",
+      caption: "Minuman dikemas dengan cup berkualitas dan seal rapi",
+    },
+
+    // Pengantaran - Proses delivery
+    {
+      id: 10,
+      src: "/placeholder-delivery-1.jpg",
+      alt: "Tim delivery siap antar",
+      width: 1000,
+      height: 1200,
+      category: "pengantaran",
+      caption: "Tim delivery kami siap mengantarkan pesanan Anda",
+    },
+    {
+      id: 11,
+      src: "/placeholder-delivery-2.jpg",
+      alt: "Pengantaran pesanan",
+      width: 1200,
+      height: 800,
+      category: "pengantaran",
+      caption: "Pengantaran tepat waktu dengan senyum ramah",
+    },
+    {
+      id: 12,
+      src: "/placeholder-delivery-3.jpg",
+      alt: "Motor delivery branded",
+      width: 900,
+      height: 700,
+      category: "pengantaran",
+      caption: "Armada delivery bersih dan terawat",
+    },
+    {
+      id: 13,
+      src: "/placeholder-delivery-4.jpg",
+      alt: "Handover pesanan ke customer",
+      width: 800,
+      height: 1000,
+      category: "pengantaran",
+      caption: "Serah terima pesanan dengan protokol yang baik",
+    },
+
+    // Lainnya - Aktivitas lain
+    {
+      id: 14,
+      src: "/placeholder-other-1.jpg",
+      alt: "Foto bersama tim",
+      width: 1200,
+      height: 800,
+      category: "lainnya",
+      caption: "Tim Tataring Pasombu Sihol yang solid dan kompak",
+    },
+    {
+      id: 15,
+      src: "/placeholder-other-2.jpg",
+      alt: "Customer happy",
+      width: 800,
+      height: 1000,
+      category: "lainnya",
+      caption: "Senyum puas pelanggan adalah kebahagiaan kami",
+    },
+    {
+      id: 16,
+      src: "/placeholder-other-3.jpg",
+      alt: "Dapur bersih",
+      width: 1000,
+      height: 750,
+      category: "lainnya",
+      caption: "Dapur yang bersih dan higienis adalah prioritas kami",
+    },
+    {
+      id: 17,
+      src: "/placeholder-other-4.jpg",
+      alt: "Persiapan pre-order",
+      width: 900,
+      height: 1100,
+      category: "lainnya",
+      caption: "Persiapan matang untuk setiap sesi pre-order",
+    },
+    {
+      id: 18,
+      src: "/placeholder-other-5.jpg",
+      alt: "Behind the scenes",
+      width: 1100,
+      height: 800,
+      category: "lainnya",
+      caption: "Di balik layar kerja keras tim kami",
+    },
+  ];
+
   const whatsappNumber = "6282274783879";
 
   const scrollToMenu = () => {
@@ -370,6 +553,8 @@ const Home = () => {
         />
 
         <TestimonialSection testimonials={testimonials} />
+
+        <GallerySection images={galleryImages} />
 
         <PreOrderSection onPreOrderClick={handleWhatsAppPreOrder} />
 

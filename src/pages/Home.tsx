@@ -24,6 +24,7 @@ import CocoPandan from "@/assets/images/menus/coco-pandan.png";
 import HeroSection from "../components/HeroSection";
 import MenuSection from "../components/MenuSection";
 import PreOrderSection from "../components/PreOrderSection";
+import TestimonialSection from "../components/TestimonialSection";
 import Footer from "../components/Footer";
 
 interface MenuItem {
@@ -48,6 +49,14 @@ interface SelectedItem extends MenuItem {
   isPackage?: boolean;
   items?: string;
   originalPrice?: string;
+}
+
+interface Testimonial {
+  name: string;
+  location: string;
+  rating: number;
+  comment: string;
+  date: string;
 }
 
 const Home = () => {
@@ -226,6 +235,49 @@ const Home = () => {
     },
   ];
 
+  const testimonials: Testimonial[] = [
+    {
+      name: "Rina Simanjuntak",
+      location: "Bogor, Jawa Barat",
+      rating: 5,
+      comment:
+        "Ayam gota-nya luar biasa! Rasa yang autentik seperti masakan nenek di kampung. Bumbu andaliman-nya pas banget, bikin kangen kampung halaman. Pelayanannya juga ramah dan cepat!",
+      date: "15 Mei 2025",
+    },
+    {
+      name: "Jonatan Hutabarat",
+      location: "Dramaga, Bogor",
+      rating: 5,
+      comment:
+        "Sudah beberapa kali order B2 Kecap, selalu konsisten enak! Dagingnya empuk, bumbu meresap sempurna. Paket hemat 2 jadi favorit saya, worth it banget!",
+      date: "10 Mei 2025",
+    },
+    {
+      name: "Maruli Pardede",
+      location: "Kota Bogor",
+      rating: 5,
+      comment:
+        "Mie Sop Medan-nya mantap! Kuahnya gurih, mie-nya enak. Harga terjangkau tapi rasa nggak kalah sama rumah makan mahal. Kopi Kedanta juga juara, manis aren-nya pas!",
+      date: "8 Mei 2025",
+    },
+    {
+      name: "Delima Siahaan",
+      location: "Bogor Tengah",
+      rating: 5,
+      comment:
+        "Pelayanan pre-order sangat profesional. Pesanan datang tepat waktu dan masih hangat. Rasanya benar-benar seperti masakan rumah! Recommended banget untuk yang kangen masakan Batak.",
+      date: "5 Mei 2025",
+    },
+    {
+      name: "Robert Sitompul",
+      location: "Cibinong, Bogor",
+      rating: 5,
+      comment:
+        "Pertama kali coba langsung jatuh cinta! Porsi banyak, harga ramah di kantong mahasiswa. Aren Latte-nya enak banget, tidak terlalu manis. Pasti bakal langganan!",
+      date: "1 Mei 2025",
+    },
+  ];
+
   const whatsappNumber = "6282274783879";
 
   const scrollToMenu = () => {
@@ -316,6 +368,8 @@ const Home = () => {
           minuman={minuman}
           onOrderClick={handleOrderClick}
         />
+
+        <TestimonialSection testimonials={testimonials} />
 
         <PreOrderSection onPreOrderClick={handleWhatsAppPreOrder} />
 

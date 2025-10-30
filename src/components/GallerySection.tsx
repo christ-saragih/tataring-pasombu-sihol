@@ -90,12 +90,9 @@ const GallerySection: React.FC<GallerySectionProps> = ({ images }) => {
         <div className="absolute bottom-8 right-16 w-8 h-8 border border-red-900 transform rotate-45"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container max-w-7xl mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-900 to-amber-600 rounded-full mb-4 shadow-lg">
-            <Camera className="w-8 h-8 text-white" />
-          </div>
           <h2
             className="text-3xl md:text-5xl font-bold text-red-900 mb-4"
             style={{
@@ -116,24 +113,26 @@ const GallerySection: React.FC<GallerySectionProps> = ({ images }) => {
 
         {/* Category Filter */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((category) => (
-            <button
-              key={category.value}
-              onClick={() => setFilter(category.value)}
-              className={`px-6 py-2 rounded-full font-bold transition-all duration-300 ${
-                filter === category.value
-                  ? "bg-red-900 text-white shadow-lg transform scale-105"
-                  : "bg-white text-red-900 border-2 border-red-200 hover:border-amber-400 hover:bg-amber-50"
-              }`}
-              style={{ fontFamily: "Oswald, Arial, sans-serif" }}
-            >
-              {category.label}
-            </button>
-          ))}
+          <div className="bg-white rounded-full p-1 shadow-lg border-2 border-red-200 whitespace-nowrap">
+            {categories.map((category) => (
+              <button
+                key={category.value}
+                onClick={() => setFilter(category.value)}
+                className={`px-6 py-3 rounded-full font-bold transition-all uppercase ${
+                  filter === category.value
+                    ? "bg-red-900 text-white shadow-lg"
+                    : "text-red-900 hover:bg-red-50"
+                }`}
+                style={{ fontFamily: "Oswald, Arial, sans-serif" }}
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Masonry Grid Gallery */}
-        <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
           {filteredImages.map((image, index) => (
             <div
               key={image.id}

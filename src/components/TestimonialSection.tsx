@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Quote, Star, ChevronLeft, ChevronRight } from "lucide-react";
 
-interface Testimonial {
+export interface Testimonial {
   name: string;
-  location: string;
   rating: number;
   comment: string;
   date: string;
@@ -25,7 +24,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, 8000);
 
     return () => clearInterval(interval);
   }, [isAutoPlaying, testimonials.length]);
@@ -121,7 +120,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
               <div className="text-center border-t-2 border-amber-100 pt-6">
                 <div className="flex flex-col md:flex-row items-center justify-center gap-4">
                   {/* Avatar */}
-                  <div className="w-16 h-16 bg-gradient-to-br from-red-900 to-amber-600 rounded-full flex items-center justify-center shadow-lg">
+                  <div className="w-12 h-12 bg-gradient-to-br from-red-900 to-amber-600 rounded-full flex items-center justify-center shadow-lg">
                     <span
                       className="text-2xl font-bold text-white"
                       style={{ fontFamily: "Oswald, Arial, sans-serif" }}
@@ -130,7 +129,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
                     </span>
                   </div>
 
-                  {/* Name and Location */}
+                  {/* Name and Date */}
                   <div className="text-center md:text-left">
                     <h4
                       className="text-xl font-bold text-red-900"
@@ -139,12 +138,9 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
                       {testimonials[currentIndex].name}
                     </h4>
                     <p
-                      className="text-gray-600 text-sm"
+                      className="text-gray-600 text-sm mt-1"
                       style={{ fontFamily: "Merriweather, Georgia, serif" }}
                     >
-                      {testimonials[currentIndex].location}
-                    </p>
-                    <p className="text-gray-400 text-xs mt-1">
                       {testimonials[currentIndex].date}
                     </p>
                   </div>
@@ -194,8 +190,8 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
           {testimonials.slice(0, 3).map((testimonial, index) => (
             <div
               key={index}
-              className={`bg-white rounded-xl shadow-lg overflow-hidden border-2 border-amber-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 cursor-pointer ${
-                index === currentIndex ? "ring-4 ring-amber-400" : ""
+              className={`bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2 cursor-pointer ${
+                index === currentIndex ? "ring-2 ring-amber-200" : ""
               }`}
               onClick={() => goToTestimonial(index)}
             >
@@ -230,9 +226,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
                   >
                     {testimonial.name}
                   </h5>
-                  <p className="text-gray-500 text-xs">
-                    {testimonial.location}
-                  </p>
+                  <p className="text-gray-500 text-xs">{testimonial.date}</p>
                 </div>
               </div>
             </div>
@@ -246,7 +240,7 @@ const TestimonialSection: React.FC<TestimonialSectionProps> = ({
               className="font-bold text-lg"
               style={{ fontFamily: "Oswald, Arial, sans-serif" }}
             >
-              ⭐ 15+ Pelanggan Puas dengan Layanan Kami
+              ⭐ 30+ Pelanggan Puas dengan Layanan Kami
             </p>
           </div>
         </div>

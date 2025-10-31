@@ -24,7 +24,9 @@ import CocoPandan from "@/assets/images/menus/coco-pandan.png";
 import HeroSection from "../components/HeroSection";
 import MenuSection from "../components/MenuSection";
 import PreOrderSection from "../components/PreOrderSection";
-import TestimonialSection from "../components/TestimonialSection";
+import TestimonialSection, {
+  type Testimonial,
+} from "../components/TestimonialSection";
 import GallerySection from "../components/GallerySection";
 import Footer from "../components/Footer";
 
@@ -50,14 +52,6 @@ interface SelectedItem extends MenuItem {
   isPackage?: boolean;
   items?: string;
   originalPrice?: string;
-}
-
-interface Testimonial {
-  name: string;
-  location: string;
-  rating: number;
-  comment: string;
-  date: string;
 }
 
 interface GalleryImage {
@@ -248,44 +242,46 @@ const Home = () => {
 
   const testimonials: Testimonial[] = [
     {
-      name: "Rina Simanjuntak",
-      location: "Bogor, Jawa Barat",
+      name: "Claudya",
       rating: 5,
       comment:
-        "Ayam gota-nya luar biasa! Rasa yang autentik seperti masakan nenek di kampung. Bumbu andaliman-nya pas banget, bikin kangen kampung halaman. Pelayanannya juga ramah dan cepat!",
-      date: "15 Mei 2025",
+        "Bumbu masakannya enak banget, dagingnya empuk, postingan media dan publikasinya juga kreatif, serta tim logistiknya ramah dan tepat waktu.",
+      date: "14 Juni 2025",
     },
     {
-      name: "Jonatan Hutabarat",
-      location: "Dramaga, Bogor",
+      name: "Tri Ananda Marpaung",
       rating: 5,
       comment:
-        "Sudah beberapa kali order B2 Kecap, selalu konsisten enak! Dagingnya empuk, bumbu meresap sempurna. Paket hemat 2 jadi favorit saya, worth it banget!",
-      date: "10 Mei 2025",
+        "Makanan nya best banget, pengantarannya cepat sesuai estimasi, cerita banyak tadi hahakak ga banyak juga sih. FUNFACT: kagett semua tim nya cowokk wahh semngatt deh kalian abang abangg",
+      date: "14 Juli 2025",
     },
     {
-      name: "Maruli Pardede",
-      location: "Kota Bogor",
+      name: "Bonita",
       rating: 5,
       comment:
-        "Mie Sop Medan-nya mantap! Kuahnya gurih, mie-nya enak. Harga terjangkau tapi rasa nggak kalah sama rumah makan mahal. Kopi Kedanta juga juara, manis aren-nya pas!",
-      date: "8 Mei 2025",
+        "Makanannya enakk, adminnya responsif dan ramahh, packingnya juga baguss, pengantarannya cepatt👍👍👍👍👍",
+      date: "14 Juni 2025",
     },
     {
-      name: "Delima Siahaan",
-      location: "Bogor Tengah",
+      name: "Ribka Simarmata",
       rating: 5,
       comment:
-        "Pelayanan pre-order sangat profesional. Pesanan datang tepat waktu dan masih hangat. Rasanya benar-benar seperti masakan rumah! Recommended banget untuk yang kangen masakan Batak.",
-      date: "5 Mei 2025",
+        "Makanan nya enak, wangi dan enak, cuma porsi dagingnya banyakin dikit atau ga sayurnya yg di kurangin biar seimbang.",
+      date: "7 Juni 2025",
     },
     {
-      name: "Robert Sitompul",
-      location: "Cibinong, Bogor",
+      name: "Nopita Hutabarat",
       rating: 5,
       comment:
-        "Pertama kali coba langsung jatuh cinta! Porsi banyak, harga ramah di kantong mahasiswa. Aren Latte-nya enak banget, tidak terlalu manis. Pasti bakal langganan!",
-      date: "1 Mei 2025",
+        "Ikan arsik nya enak bgt tp agak kurang garam dikitttt lagi, pelayanannya sudah ramah mantaplh, tim medianya juga keren. Saran: buat tanggo-tanggo nya yg ga pake darah dongs HAHA semangatt kaliab mencari cuan 🤑",
+      date: "7 Juni 2025",
+    },
+    {
+      name: "Andre Dwinando Oktafian",
+      rating: 4,
+      comment:
+        "Minumannya enak dan seger banget sesuai dengan harga. Postingan menunya menarik dan khas banget. Pengantarannya cepat banget, ready hari Sabtu dan hari itu juga langsung diantarkan",
+      date: "14 Juni 2025",
     },
   ];
 
